@@ -6,9 +6,12 @@ import midi.Midi;
 import nme.display.Sprite;
 import nme.events.Event;
 import nme.Lib;
-import neash.utils.ByteArray;
+import native.utils.ByteArray;
+import nme.media.Sound;
 import nme.utils.Endian;
 import sys.io.File;
+import wildmidi.GusPatch;
+import wildmidi.Sample;
 
 /**
  * ...
@@ -30,6 +33,13 @@ class Main extends Sprite
 
 	private function init(e) 
 	{
+		var sample:Sample = GusPatch.load_gus_pat(ByteArray.fromBytes(File.getBytes("C:/temp/soundfonts/fluid-soundfont-lite-patches/FluidR3_GM-B0/Strings.pat")), "", false);
+		Log.trace(sample.data.length);
+		var sound:Sound = new Sound();
+		sound.loadPCMFromByteArray(sample.data, sample.data.length >> 1, "short", false, 44100);
+		sound.play();
+		
+		/*
 		var player:midi.player.MidiPlayer = new midi.player.MidiPlayer(
 			Midi.fromByteArray(ByteArray.fromBytes(
 				//File.getBytes("C:/projects/SECRET.MID")
@@ -37,6 +47,7 @@ class Main extends Sprite
 			))
 		);
 		player.play();
+		*/
 	}
 	
 	static public function main() 
